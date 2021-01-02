@@ -33,7 +33,7 @@ public:
 
 	void deletePoint() {
 	//delete then rebuild tree
-		//currentGeometries
+		//currentGeometries.delte
 	};
 	void deletePoint() {};
 	
