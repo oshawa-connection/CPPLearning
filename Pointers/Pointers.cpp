@@ -24,6 +24,7 @@ public:
 class RTree {
 private:
 	void buildBoundingRects() {};
+	void determineDomain() {};
 	
 
 	
