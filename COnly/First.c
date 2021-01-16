@@ -1,66 +1,117 @@
-#include <stdio.h>
+/*
+	Create a TCP socket
+*/
 
-void doubleAllElements(int * passedArray) {
-	int numElements = sizeof(*passedArray) / sizeof(int);
-	for (int i = 0; i < numElements; i++) {
-		passedArray[i] = passedArray[i] * 2;
-		
-	};
+#include<stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct {
+	float x;
+	float y;
+} Point;
+
+
+typedef struct {
+	Point vertices[4];
+} Bbox;
+
+typedef enum { false, true } bool;
+
+
+typedef struct {
+	Point ** points;
+	int nPoints;
+	Bbox * boundingBox;
+	Bbox* gridRects;
+
+} RTree;
+
+float maxf(float one, float two) {
+	if (one >= two) {
+		return one;
+	}
+	else {
+		return two;
+	}
 };
 
-typedef struct Node Node;
 
-struct Node {
-	int data;
-	Node* nextNode;
+float minf(float one, float two) {
+	if (one <= two) {
+		return one;
+	}
+	else {
+		return two;
+	}
 };
 
+/**
+* 
+* */
+float distanceBtwn(Point point1, Point point2) {
+	float diffX = maxf(point1.x, point2.x) - minf(point1.x, point2.x);
+	float dxpow2 = powf(diffX, 2.0);
 
-typedef struct LinkedList {
-	Node* firstNode;
-	/*Node* endNode;*/
-} LinkedList;
-
-
-void linkedList_addNode(LinkedList * linkedList,Node * newNode) {
+	float diffY = maxf(point1.y, point2.y) - minf(point1.y, point2.y);
+	float dypow2 = powf(diffY, 2.0);
+	float sum = dypow2 + dxpow2;
 	
-	Node* currentNode = linkedList->firstNode;
+	return sqrtf(sum);
 	
-	while (currentNode->nextNode != NULL)
+};
+
+bool pointInRTree(Point* originalPointPTR, RTree* rTreePTR) {
+	Point* currentPoint = rTreePTR->points[0];
+	for (int n = 0; n < rTreePTR->nPoints;n++) {
+		if (currentPoint == originalPointPTR) {
+			return true;
+		}
+		currentPoint++;
+	}
+	return false;
+
+};
+
+Point * naiveNearestNeighbour(Point * originalPointPTR, RTree * rTreePTR) {
+	//First check originalPoint is in RTree
+	if (!pointInRTree(originalPointPTR, rTreePTR))
 	{
-		currentNode = currentNode->nextNode;
+		return NULL;
+	}
+	return originalPointPTR;
+};
+
+int main(int argc, char* argv[])
+{
+	Point point1={-1.0,-1.0};
+	Point* point1Ptr = &point1;
+	
+	Point point2 = { -1.0,-2.0 };
+	Point * points[] = { &point1,&point2 };
+
+	Point* pointsPTR = &points;
+
+	RTree rTree = { pointsPTR,2,NULL,NULL };
+
+	if (rTree.points == point1Ptr) {
+		printf("ok");
 	}
 
-	currentNode->nextNode = newNode;
-};
+	
 
+	//float distance = distanceBtwn(point1, point2);
+	//printf("Distance is %f", distance);
 
-int linkedList_Length(LinkedList* linkedList) {
-	Node* currentNode = linkedList->firstNode;
-	int length = 1;
-	while (currentNode->nextNode != NULL)
+	if (naiveNearestNeighbour(&point1, &rTree) == NULL)
 	{
-		printf("Current data value is %d", currentNode->data);
-		currentNode = currentNode->nextNode;
-		length++;
+		printf("Original point not found");
+		exit(1);
 	}
-	return length;
-};
+	else {
+		printf("Original point found!");
+	}
 
-int main() {
-	Node firstNode = { 2, NULL };
-	LinkedList myList = { &firstNode };
-	LinkedList* listPtr = &myList;
-	//printf("Current length of linked list: %d\n", linkedList_Length(&myList));
-	Node newNode = { 4, NULL };
-	Node newTwo = { 5, NULL };
-
-
-	linkedList_addNode(listPtr, &newNode);
-
-	//linkedList_addNode(listPtr, 5);
-	//linkedList_addNode(listPtr, 6);
-	//linkedList_addNode(&myList, 7);
-	int length = linkedList_Length(listPtr);
-	printf("Current length of linked list: %d\n", length);
+	//printf("Sizeof Point array is  %d\n", sizeof(points));
+	//printf("Sizeof Point array is  %d\n", sizeof(*pointsPTR));
 };

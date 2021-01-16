@@ -5,6 +5,7 @@
 #include "LinkedList.h"
 #include <vector>
 
+
 // This will be a sub-class of geometry
 class Point {
 
