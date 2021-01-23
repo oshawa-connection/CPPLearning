@@ -37,7 +37,7 @@ public:
 	//delete then rebuild tree
 		//currentGeometries.delte
 	};
-	void deletePoint() {};
+	
 	
 
 
