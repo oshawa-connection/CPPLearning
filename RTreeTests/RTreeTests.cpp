@@ -2,6 +2,8 @@
 #include "CppUnitTest.h"
 #include "../COnly/LinkedList.h"
 #include "../COnly/Usf.h"
+#include "../COnly/RTree.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace RTreeTests
@@ -40,6 +42,13 @@ namespace RTreeTests
 
 			index = indexOfF(&testArray[0], 55.5, sizeof(testArray) / sizeof(float));
 			Assert::AreEqual(index, -1);
+		}
+
+
+		TEST_METHOD(asdf)
+		{
+			int myValue = _determineTotalMinNumberOfNodesNeeded(6);
+			Assert::AreEqual(myValue, 63);
 		}
 	};
 }

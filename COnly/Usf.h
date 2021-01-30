@@ -36,6 +36,23 @@ float arrayMinf(float* arrayf, int nElements)
 }
 
 
+float arrayMaxf(float* arrayf, int nElements)
+{
+	float currentMax = INT_MIN;
+	for (int n = 0; n < nElements; n++)
+	{
+
+		if (*arrayf > currentMax)
+		{
+			currentMax = *arrayf;
+		}
+		arrayf++;
+	}
+
+	return currentMax;
+}
+
+
 int indexOfF(float * arrayf, float valueToFind, int nElements)
 {
 	for (int n = 0; n < nElements; n++)
